@@ -12,12 +12,22 @@ const PRIORITY_BADGES = {
   "רגילה": { label: "רגילה", style: "bg-slate-100 text-slate-600 border-transparent font-medium" }
 };
 
+const formatTimestamp = (timestamp) => {
+  if (!timestamp) return { date: "מחשב...", time: "" };
+  const d = timestamp.toDate();
+  return {
+    date: d.toLocaleDateString("he-IL", { day: "2-digit", month: "2-digit", year: "numeric" }),
+    time: d.toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" })
+  };
+};
+
 export default function IssueCard({ issue, userRole, currentUid, onUpdate, onDeleteClick }) {
   const isMaintenance = userRole === "maintenance";
   const canDelete = isMaintenance || currentUid === issue.reporterUid;
 
   const statusInfo = STATUS_BADGES[issue.status] || { label: issue.status, style: "bg-slate-100 text-slate-700" };
   const priorityInfo = PRIORITY_BADGES[issue.priority || "רגילה"] || PRIORITY_BADGES["רגילה"];
+  const { date, time } = formatTimestamp(issue.createdAt);
 
   return (
     <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between">
@@ -61,7 +71,10 @@ export default function IssueCard({ issue, userRole, currentUid, onUpdate, onDel
       </div>
 
       <div className="border-t border-slate-100 pt-3 mt-2">
-        <div className="text-[11px] text-slate-400 mb-3">דווח ע״י: {issue.reportedBy}</div>
+        <div className="flex items-center justify-between text-[11px] text-slate-400 mb-3">
+          <span>דווח ע״י: {issue.reportedBy}</span>
+          <span>📅 {date} {time && `| 🕒 ${time}`}</span>
+        </div>
 
         {isMaintenance ? (
           <div className="space-y-2">
