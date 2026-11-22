@@ -213,9 +213,21 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* רשימת הכרטיסים */}
+        {/* רשימת הכרטיסים או שלד טעינה (Skeleton) */}
         {loading ? (
-          <div className="text-center py-12 text-slate-500 font-medium">טוען נתונים מהענן...</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[1, 2, 3].map((n) => (
+              <div key={n} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm animate-pulse space-y-3">
+                <div className="flex justify-between">
+                  <div className="h-5 w-24 bg-slate-200 rounded-md"></div>
+                  <div className="h-5 w-16 bg-slate-200 rounded-full"></div>
+                </div>
+                <div className="h-6 w-3/4 bg-slate-200 rounded-md"></div>
+                <div className="h-4 w-1/3 bg-slate-100 rounded-md"></div>
+                <div className="h-12 w-full bg-slate-100 rounded-md"></div>
+              </div>
+            ))}
+          </div>
         ) : filteredIssues.length === 0 ? (
           <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-500 shadow-sm">
             <p className="text-lg font-semibold text-slate-700 mb-1">לא נמצאו תקלות התואמות לסינון</p>

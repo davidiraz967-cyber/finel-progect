@@ -19,12 +19,10 @@ export function AuthProvider({ children }) {
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // פונקציית הרשמה חדשה למערכת (מוגדר כ-reporter כברירת מחדל)
   async function signup(email, password) {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // יצירת מסמך המשתמש באוסף users עם תפקיד מדווח
     await setDoc(doc(db, "users", user.uid), {
       email: user.email,
       role: "reporter",
@@ -77,7 +75,14 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {loading ? <p>loading data</p> : children}
+      {loading ? (
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center" dir="rtl">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-sm font-medium text-slate-600">טוען מערכת...</span>
+          </div>
+        </div>
+      ) : children}
     </AuthContext.Provider>
   );
 }
