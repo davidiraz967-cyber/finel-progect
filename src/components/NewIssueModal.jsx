@@ -59,8 +59,8 @@ export default function NewIssueModal({ isOpen, onClose, existingIssues = [] }) 
     : null;
 
   async function handleAskAi() {
-    if (!title.trim() && !description.trim()) {
-      return setError("יש להזין כותרת או תיאור תקלה כדי לקבל עזרה");
+    if (!title.trim() || !description.trim()) {
+      return setError("יש להזין כותרת ותיאור תקלה כדי לקבל עזרה");
     }
 
     setError("");
